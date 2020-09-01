@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import { PropTypes } from 'prop-types'
 import ExampleActions from 'App/Stores/Example/Actions'
 import { liveInEurope } from 'App/Stores/Example/Selectors'
-import Style from './UsersListScreenStyle'
+import Style from './UserDetailsScreenStyle'
 import { ApplicationStyles, Helpers, Images, Metrics } from 'App/Theme'
 import { FlatList } from 'react-native-gesture-handler'
 import UserListItem from '../../Components/Users/UserListItem'
@@ -53,27 +53,7 @@ const GET_USER = gql`
   }
 `
 
-const GET_USERS = gql`
-  query($options: PageQueryOptions, $todoOptions: PageQueryOptions) {
-    users(options: $options) {
-      data {
-        id
-        email
-        name
-        todos(options: $todoOptions) {
-          meta {
-            totalCount
-          }
-        }
-      }
-      meta {
-        totalCount
-      }
-    }
-  }
-`
-
-const UsersListScreen = ({navigate}) => {
+const UserDetailsScreen = ({navigate, route}) => {
   const { loading, error, data } = useQuery(GET_USERS, {
     variables: {
       "options": {
@@ -105,4 +85,4 @@ const UsersListScreen = ({navigate}) => {
   }
 }
 
-export default UsersListScreen
+export default UserDetailsScreen
