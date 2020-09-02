@@ -7,8 +7,7 @@ import ExampleActions from 'App/Stores/Example/Actions'
 import { liveInEurope } from 'App/Stores/Example/Selectors'
 import Style from './UserDetailsScreenStyle'
 import { ApplicationStyles, Helpers, Images, Metrics } from 'App/Theme'
-import { FlatList } from 'react-native-gesture-handler'
-import UserListItem from '../../Components/Users/UserListItem'
+import UserDetails from 'App/Components/Users/UserDetails'
 
 /**
  *
@@ -16,9 +15,8 @@ import UserListItem from '../../Components/Users/UserListItem'
  */
 
 const GET_USER = gql`
-  query($options: PageQueryOptions, $todoOptions: PageQueryOptions) {
-    users(options: $options) {
-      data {
+  query($id: ID!, $todoOptions: PageQueryOptions) {
+    user(id: $id) {
         id
         username
         email
@@ -45,23 +43,15 @@ const GET_USER = gql`
             totalCount
           }
         }
-      }
-      meta {
-        totalCount
-      }
     }
   }
 `
 
 const UserDetailsScreen = ({navigate, route}) => {
-  const { loading, error, data } = useQuery(GET_USERS, {
+  const { id } = route.params
+  const { loading, error, data } = useQuery(GET_USER, {
     variables: {
-      "options": {
-        "paginate": {
-          "page": 1,
-          "limit": 5
-        }
-      },
+      "id": id,
       "todoOptions": {
         "paginate": {
           "page": 1,
@@ -72,15 +62,11 @@ const UserDetailsScreen = ({navigate, route}) => {
   });
 
   if (loading) return null;
-  if (error) return `Error! ${error}`;
+  if (error) return <Text>Error! {error}</Text>
 
-  if (data.users.data) {
+  if (data.user) {
     return (
-      <FlatList
-        style={{ width: '100%' }}
-        renderItem={ ({ item }) => { return <UserListItem user={item} />}}
-        keyExtractor={(user, idex) => user.id + idex}
-        data={data.users.data} />
+      <UserDetails user={data.user} />
     )
   }
 }
