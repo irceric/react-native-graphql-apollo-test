@@ -113,9 +113,12 @@ const UsersListScreen = ({ navigate }) => {
         </View>
 
         <View style={[Helpers.row, Helpers.center, styles.paginationContainer]}>
-          <Button title="Prev" onPress={handleClickPrevPage} />
+          {currentPage > 1 && <Button title="Prev" onPress={handleClickPrevPage} />}
+
           <Text style={Fonts.medium}>{currentPage}</Text>
-          <Button title="Next" onPress={handleClickNextPage} />
+          {currentPage < Math.ceil(total / PAGE_SIZE) && (
+            <Button title="Next" onPress={handleClickNextPage} />
+          )}
         </View>
       </View>
     )
