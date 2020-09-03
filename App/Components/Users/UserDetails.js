@@ -52,7 +52,7 @@ export default (UserDetails = ({ user }) => {
       <View style={[Helpers.colCenter, styles.todoContainer]}>
         <Text style={[Fonts.medium, styles.headerStyle]}>Top 3 TODOs:</Text>
         {firstTodos.map((todo) => (
-          <View style={[Helpers.fullWidth, Helpers.rowCenter, styles.todoItemStyle]}>
+          <View key={todo.id} style={[Helpers.fullWidth, Helpers.rowCenter, styles.todoItemStyle]}>
             <Text style={Fonts.regular}>{todo.title}</Text>
           </View>
         ))}

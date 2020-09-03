@@ -1,13 +1,16 @@
 import React from 'react'
-import _ from 'lodash'
 import { Text, View, TouchableWithoutFeedback, StyleSheet } from 'react-native'
 
 import { Helpers, Fonts, Colors } from 'App/Theme'
 
 export default (UserListItem = ({ user, onPressItem }) => {
-  const { id, name, email, todos } = user
-
-  const totalCount = _.get(todos, 'meta.totalCount', 0)
+  const {
+    name,
+    email,
+    todos: {
+      meta: { totalCount },
+    },
+  } = user
 
   if (name && email && totalCount) {
     return (

@@ -89,7 +89,7 @@ const UsersListScreen = ({ navigate }) => {
   }, [data])
 
   if (loading) return null
-  if (error) return `Error! ${error}`
+  if (error) return <Text style={styles.error}>`Error! ${error}`</Text>
 
   if (data.users.data) {
     return (

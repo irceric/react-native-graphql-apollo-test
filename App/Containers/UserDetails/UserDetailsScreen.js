@@ -17,57 +17,55 @@ import UserDetails from 'App/Components/Users/UserDetails'
 const GET_USER = gql`
   query($id: ID!, $todoOptions: PageQueryOptions) {
     user(id: $id) {
-        id
-        username
-        email
+      id
+      username
+      email
+      name
+      phone
+      address {
+        street
+        city
+        zipcode
+      }
+      company {
         name
-        phone
-        address {
-          street
-          city
-          zipcode
-        }
-        company {
-          name
-        }
-        todos(options: $todoOptions) {
-          data {
+      }
+      todos(options: $todoOptions) {
+        data {
+          id
+          title
+          completed
+          user {
             id
-            title
-            completed
-            user {
-              id
-            }
-          }
-          meta {
-            totalCount
           }
         }
+        meta {
+          totalCount
+        }
+      }
     }
   }
 `
 
-const UserDetailsScreen = ({navigate, route}) => {
+const UserDetailsScreen = ({ navigate, route }) => {
   const { id } = route.params
   const { loading, error, data } = useQuery(GET_USER, {
     variables: {
-      "id": id,
-      "todoOptions": {
-        "paginate": {
-          "page": 1,
-          "limit": 3
-        }
-      }
-    }
-  });
+      id: id,
+      todoOptions: {
+        paginate: {
+          page: 1,
+          limit: 3,
+        },
+      },
+    },
+  })
 
-  if (loading) return null;
+  if (loading) return null
   if (error) return <Text>Error! {error}</Text>
 
   if (data.user) {
-    return (
-      <UserDetails user={data.user} />
-    )
+    return <UserDetails user={data.user} />
   }
 }
 
