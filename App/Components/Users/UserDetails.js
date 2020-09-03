@@ -42,7 +42,7 @@ export default (UserDetails = ({ user }) => {
   } = user
 
   return (
-    <View>
+    <View style={[Helpers.fill, Helpers.col]}>
       <Row title="Full Name" content={name} />
       <Row title="Email" content={email} />
       <Row title="Phone" content={phone} />
