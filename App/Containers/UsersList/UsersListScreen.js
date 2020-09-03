@@ -1,41 +1,17 @@
 import React, { useState, useEffect } from 'react'
-import { useQuery, gql } from '@apollo/client'
-import { useNavigation } from '@react-navigation/native'
-import { Platform, Text, View, Button, ActivityIndicator, Image } from 'react-native'
-import { connect } from 'react-redux'
-import { PropTypes } from 'prop-types'
-import ExampleActions from 'App/Stores/Example/Actions'
-import { liveInEurope } from 'App/Stores/Example/Selectors'
-import styles from './UsersListScreenStyle'
-import { ApplicationStyles, Helpers, Images, Metrics } from 'App/Theme'
 import { FlatList } from 'react-native-gesture-handler'
+import { useNavigation } from '@react-navigation/native'
+import { Text, Button, View } from 'react-native'
+
+import styles from './UsersListScreenStyle'
+import { Fonts, Helpers } from 'App/Theme'
+import { userService } from 'App/Services/UserService'
 import UserListItem from 'App/Components/Users/UserListItem'
 import UserCard from 'App/Components/Users/UserCard'
-import Fonts from '../../Theme/Fonts'
 /**
  *
  * This screen displays list of users
  */
-
-const GET_USERS = gql`
-  query($options: PageQueryOptions, $todoOptions: PageQueryOptions) {
-    users(options: $options) {
-      data {
-        id
-        email
-        name
-        todos(options: $todoOptions) {
-          meta {
-            totalCount
-          }
-        }
-      }
-      meta {
-        totalCount
-      }
-    }
-  }
-`
 
 const UsersListScreen = ({ navigate }) => {
   const navigation = useNavigation()
@@ -65,22 +41,7 @@ const UsersListScreen = ({ navigate }) => {
     ),
   })
 
-  const { loading, error, data } = useQuery(GET_USERS, {
-    variables: {
-      options: {
-        paginate: {
-          page: currentPage,
-          limit: 5,
-        },
-      },
-      todoOptions: {
-        paginate: {
-          page: 1,
-          limit: 3,
-        },
-      },
-    },
-  })
+  const { loading, error, data } = userService.fetchUsers(currentPage)
 
   useEffect(() => {
     if (data && data.users) {

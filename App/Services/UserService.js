@@ -1,6 +1,8 @@
 import axios from 'axios'
+import { useQuery } from '@apollo/client'
 import { Config } from 'App/Config'
 import { is, curryN, gte } from 'ramda'
+import { queries } from 'App/Queries'
 
 const isWithin = curryN(3, (min, max, value) => {
   const isNumber = is(Number)
@@ -44,6 +46,39 @@ function fetchUser() {
   })
 }
 
+const fetchSingleUser = (id) =>
+  useQuery(queries.GET_USER, {
+    variables: {
+      id: id,
+      todoOptions: {
+        paginate: {
+          page: 1,
+          limit: 3,
+        },
+      },
+    },
+  })
+
+const fetchUsers = (currentPage) =>
+  useQuery(queries.GET_USERS, {
+    variables: {
+      options: {
+        paginate: {
+          page: currentPage,
+          limit: 5,
+        },
+      },
+      todoOptions: {
+        paginate: {
+          page: 1,
+          limit: 3,
+        },
+      },
+    },
+  })
+
 export const userService = {
   fetchUser,
+  fetchSingleUser,
+  fetchUsers,
 }
