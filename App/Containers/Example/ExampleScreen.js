@@ -34,7 +34,7 @@ class ExampleScreen extends React.Component {
           Metrics.mediumVerticalMargin,
         ]}
       >
-        {this.props.userIsLoading ? (
+        {this.props.userIsLoading && !Object.keys(this.props.user).length ? (
           <ActivityIndicator size="large" color="#0000ff" />
         ) : (
           <View style={{ width: '100%' }}>
