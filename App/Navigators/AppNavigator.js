@@ -1,28 +1,42 @@
-import { createAppContainer, createStackNavigator } from 'react-navigation'
-
+import React from 'react'
+import { Animated } from 'react-native'
+import { createStackNavigator } from '@react-navigation/stack'
 import ExampleScreen from 'App/Containers/Example/ExampleScreen'
 import SplashScreen from 'App/Containers/SplashScreen/SplashScreen'
-
+import UsersListScreen from 'App/Containers/UsersList/UsersListScreen'
+import UserDetailsScreen from 'App/Containers/UserDetails/UserDetailsScreen'
 /**
  * The root screen contains the application's navigation.
  *
  * @see https://reactnavigation.org/docs/en/hello-react-navigation.html#creating-a-stack-navigator
  */
-const StackNavigator = createStackNavigator(
-  {
-    // Create the application routes here (the key is the route name, the value is the target screen)
-    // See https://reactnavigation.org/docs/en/stack-navigator.html#routeconfigs
-    SplashScreen: SplashScreen,
-    // The main application screen is our "ExampleScreen". Feel free to replace it with your
-    // own screen and remove the example.
-    MainScreen: ExampleScreen,
-  },
-  {
-    // By default the application will show the splash screen
-    initialRouteName: 'SplashScreen',
-    // See https://reactnavigation.org/docs/en/stack-navigator.html#stacknavigatorconfig
-    headerMode: 'none',
+
+const forFade = ({ current, next }) => {
+  const opacity = Animated.add(current.progress, next ? next.progress : 0).interpolate({
+    inputRange: [0, 1, 2],
+    outputRange: [0, 1, 0],
+  })
+
+  return {
+    leftButtonStyle: { opacity },
+    rightButtonStyle: { opacity },
+    titleStyle: { opacity },
+    backgroundStyle: { opacity },
   }
+}
+
+const Stack = createStackNavigator()
+const JenzyStack = () => (
+  <Stack.Navigator initialRouteName="ExampleScreen">
+    <Stack.Screen name="SplashScreen" component={SplashScreen} />
+    <Stack.Screen name="ExampleScreen" component={ExampleScreen} />
+    <Stack.Screen name="UsersList" component={UsersListScreen} />
+    <Stack.Screen
+      name="UserDetails"
+      component={UserDetailsScreen}
+      options={{ headerStyleInterpolator: forFade }}
+    />
+  </Stack.Navigator>
 )
 
-export default createAppContainer(StackNavigator)
+export default JenzyStack

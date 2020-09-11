@@ -61,6 +61,14 @@ class ExampleScreen extends React.Component {
               onPress={() => this._fetchUser()}
               title="Refresh"
             />
+
+            <Button
+              style={ApplicationStyles.button}
+              onPress={() => {
+                this.props.navigation.navigate('UsersList')
+              }}
+              title="Go to Users List"
+            />
           </View>
         )}
       </View>
